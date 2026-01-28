@@ -1,6 +1,14 @@
 version: "3.8"
 
 services:
+
+  nginx:
+    build: ./nginx
+    container_name: nginx_proxy
+    ports:
+      - "80:80"
+ 
+      
   mongodb:
     image: mongo:latest
     container_name: mongodb_container
@@ -16,21 +24,15 @@ services:
 
   backend:
     build: ./backend
-    container_name: node-api
+    container_name: node-backend
     restart: unless-stopped
-    ports:
-      - "5000:5000"
+   
     depends_on:
       - mongodb
 
   frontend:
     build: ./frontend
     container_name: react-frontend
-    restart: unless-stopped
-    stdin_open: true
-    tty: true
-    ports:
-      - "3000:3000"
     depends_on:
       - backend
 volumes:
