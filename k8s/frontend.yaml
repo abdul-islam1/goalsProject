@@ -14,6 +14,10 @@ spec:
       containers:
       - name: client
         image: abdul1s/piitgoals-frontend:0.1
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
         ports:
         - containerPort: 3000
 ---
