@@ -8,13 +8,14 @@ metadata:
     chart: kube-prometheus-stack
     release: kubeprometheus-stack
 type: Opaque
+
 stringData:
   alertmanager.yaml: |
     global:
       resolve_timeout: 2m
 
     route:
-      receiver: 'discord'
+      receiver: discord
       group_by: ['alertname', 'namespace']
       group_wait: 30s
       group_interval: 1m
@@ -23,24 +24,27 @@ stringData:
       routes:
         - match:
             alertname: Watchdog
-          receiver: 'null'
-
+          receiver: null
 
     receivers:
-      - name: 'discord'
-        discord_configs:
-          - webhook_url: 'https://discord.com/api/webhooks/1508211913937653952/PRqDEUeLvFoDgz9_wPxaoE6tasVM-6Mt9eixmbJEPxxCjPFiPgpzvlsRj1Z62Jijsco4'
+      - name: discord
+        webhook_configs:
+          - url: "https://discord.com/api/webhooks/1508520943511797900/Y71CiEMYJowusqWNISDlOxZhYkvRW_fmQGnuojzVyMsXhWkGGJW-SLQvLL3Phpd6yj37"
             send_resolved: true
+            http_config:
+              follow_redirects: true
+
             title: '{{ .CommonLabels.alertname }}'
-            message: |-
+
+            message: |
               {{ range .Alerts }}
-              **Alert:** {{ .Labels.alertname }}
-              **Severity:** {{ .Labels.severity }}
-              **Instance:** {{ .Labels.namespace }}/{{ if .Labels.pod }}{{ .Labels.pod }}{{ else }}N/A{{ end }}
-              **Description:** {{ .Annotations.description }}
-              **Summary:** {{ .Annotations.summary }}
-              **Status:** {{ .Status | toUpper }}
+              Alert: {{ .Labels.alertname }}
+              Severity: {{ .Labels.severity }}
+              Namespace: {{ .Labels.namespace }}
+              Pod: {{ .Labels.pod }}
+              Status: {{ .Status }}
+              Summary: {{ .Annotations.summary }}
+              Description: {{ .Annotations.description }}
               {{ end }}
 
-
-      - name: 'null'
+      - name: null
