@@ -14,7 +14,7 @@ function App() {
       setIsLoading(true);
 
       try {
-        const response = await fetch('/goals/');
+        const response = await fetch('http://goals-lb-1739088316.us-east-1.elb.amazonaws.com:5000/goals/');
 
         const resData = await response.json();
 
@@ -39,7 +39,7 @@ function App() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/goals/', {
+      const response = await fetch('http://goals-lb-1739088316.us-east-1.elb.amazonaws.com:5000/goals/', {
         method: 'POST',
         body: JSON.stringify({
           text: goalText,
@@ -78,7 +78,7 @@ function App() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/goals/' + goalId, {
+      const response = await fetch('http://goals-lb-1739088316.us-east-1.elb.amazonaws.com:5000/goals/' + goalId, {
         method: 'DELETE',
       });
 
