@@ -84,18 +84,19 @@ app.delete('/goals/:id', async (req, res) => {
 });
 
 mongoose.connect(
-  `mongodb://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_URL}/appdb?authSource=admin`, 
+  "mongodb+srv://root:root@cluster0.lldlfh4.mongodb.net/appdb?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  },
-  (err) => {
-    if (err) {
-      console.error('FAILED TO CONNECT TO MONGODB,did you added the mongodb url?');
-      console.error(err);
-    } else {
-      console.log('CONNECTED TO MONGODB!!');
-      app.listen(5000);
-    }
   }
-);
+)
+.then(() => {
+  console.log("CONNECTED TO MONGODB!!");
+  app.listen(5000, () => {
+    console.log("Server running on port 5000");
+  });
+})
+.catch((err) => {
+  console.error("FAILED TO CONNECT TO MONGODB");
+  console.error(err);
+});
